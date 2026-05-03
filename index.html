@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,10 +32,10 @@
 
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;overflow:hidden;-webkit-font-smoothing:antialiased;}
 
-#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;}
+#app{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;flex-direction:column;}
 
 /* ── Screens ── */
-.screen{display:none;flex:1;overflow-y:auto;overflow-x:hidden;padding-bottom:72px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.screen{display:none;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:80px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .screen::-webkit-scrollbar{display:none;}
 .screen.active{display:flex;flex-direction:column;}
 
@@ -227,12 +228,12 @@ nav{
     <button class="person-btn" id="btn-gal" onclick="togglePerson('gal')">
       <span class="pemoji">🏋️</span>
       <span class="pname">Gal</span>
-      <span class="prole">You</span>
+      <span class="prole" id="gal-age-label">–</span>
     </button>
     <button class="person-btn" id="btn-shelly" onclick="togglePerson('shelly')">
       <span class="pemoji">🌸</span>
       <span class="pname">Shelly</span>
-      <span class="prole">Wife</span>
+      <span class="prole" id="shelly-age-label">–</span>
     </button>
     <button class="person-btn" id="btn-sol" onclick="togglePerson('sol')">
       <span class="pemoji">👶</span>
@@ -361,9 +362,11 @@ nav{
 // ──────────────────────────────────────────────
 //  Constants
 // ──────────────────────────────────────────────
-const SOL_DOB = new Date('2025-09-10T00:00:00');
+const SOL_DOB    = new Date('2025-09-10T00:00:00');
+const GAL_DOB    = new Date('1994-11-13T00:00:00');
+const SHELLY_DOB = new Date('1994-06-22T00:00:00');
 const API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL   = 'claude-sonnet-4-6';
+const MODEL   = 'claude-sonnet-4-5-20250929';
 
 // ──────────────────────────────────────────────
 //  State
@@ -379,11 +382,34 @@ let apiKey           = localStorage.getItem('ns_apikey') || '';
 //  Init
 // ──────────────────────────────────────────────
 function init() {
-  updateSolAge();
+  updateAges();
   updateNoKeyBanner();
   if (apiKey) document.getElementById('api-key-input').value = apiKey;
   document.getElementById('file-input').addEventListener('change', onFileSelect);
   updateAnalyzeBtn();
+}
+
+function updateAges() {
+  const el1 = document.getElementById('gal-age-label');
+  const el2 = document.getElementById('shelly-age-label');
+  const el3 = document.getElementById('sol-age-label');
+  const el4 = document.getElementById('sol-settings-age');
+  if (el1) el1.textContent = ageLabel(GAL_DOB);
+  if (el2) el2.textContent = ageLabel(SHELLY_DOB);
+  if (el3) el3.textContent = solAgeText();
+  if (el4) el4.textContent = solAgeText();
+}
+
+function ageYears(dob) {
+  const now = new Date();
+  let age = now.getFullYear() - dob.getFullYear();
+  const notYet = now.getMonth() < dob.getMonth() ||
+    (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate());
+  if (notYet) age--;
+  return age;
+}
+function ageLabel(dob) {
+  return `${ageYears(dob)} y.o.`;
 }
 
 // ──────────────────────────────────────────────
@@ -405,13 +431,7 @@ function solAgeText() {
   if (d < 5) return `${mo} months old`;
   return `${mo}m ${d}d old`;
 }
-function updateSolAge() {
-  const t = solAgeText();
-  const el1 = document.getElementById('sol-age-label');
-  const el2 = document.getElementById('sol-settings-age');
-  if (el1) el1.textContent = t;
-  if (el2) el2.textContent = t;
-}
+
 
 // ──────────────────────────────────────────────
 //  Screen Navigation
@@ -424,7 +444,7 @@ function showScreen(name) {
   if (nb) nb.classList.add('active');
   if (name === 'history') renderHistory();
   if (name === 'settings') {
-    updateSolAge();
+    updateAges();
     if (apiKey) document.getElementById('api-key-input').value = apiKey;
   }
 }
@@ -628,8 +648,11 @@ async function callAPI(clarification = null) {
 
   if (!res.ok) {
     let msg = `API error ${res.status}`;
-    try { const e = await res.json(); msg = e.error?.message || msg; } catch {}
-    throw new Error(msg);
+    try {
+      const e = await res.json();
+      msg = e.error?.message || JSON.stringify(e) || msg;
+    } catch {}
+    throw new Error(`${res.status}: ${msg}`);
   }
 
   const data = await res.json();
@@ -698,8 +721,8 @@ function renderResults(data) {
   }
 
   const PEOPLE = {
-    gal:   { emoji: '🏋️', name: 'Gal',   role: 'You' },
-    shelly:{ emoji: '🌸',  name: 'Shelly', role: 'Wife' },
+    gal:   { emoji: '🏋️', name: 'Gal',   role: `${ageYears(GAL_DOB)} years old` },
+    shelly:{ emoji: '🌸',  name: 'Shelly', role: `${ageYears(SHELLY_DOB)} years old` },
     sol:   { emoji: '👶',  name: 'Sol',    role: solAgeText() }
   };
 
