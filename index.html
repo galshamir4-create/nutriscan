@@ -8,152 +8,123 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NutriScan">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-
-:root {
-  --bg:       #F8F4EE;
-  --card:     #FFFFFF;
-  --green:    #243E14;
-  --green-mid:#3D6622;
-  --green-lt: #6A9E46;
-  --coral:    #D9603A;
-  --amber:    #E8A020;
-  --red:      #C94040;
-  --text:     #1C1C18;
-  --muted:    #6B6858;
-  --border:   #E2DDD4;
-  --shadow:   0 2px 14px rgba(36,62,20,.07);
-  --shadow-lg:0 8px 32px rgba(36,62,20,.12);
-  --r:        18px;
-  --r-sm:     11px;
+:root{
+  --bg:#F8F4EE;--card:#fff;--green:#243E14;--green-mid:#3D6622;
+  --green-lt:#6A9E46;--coral:#D9603A;--amber:#E8A020;--red:#C94040;
+  --text:#1C1C18;--muted:#6B6858;--border:#E2DDD4;
+  --shadow:0 2px 14px rgba(36,62,20,.07);--r:18px;--r-sm:11px;
 }
-
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.5;overflow:hidden;-webkit-font-smoothing:antialiased;}
-
 #app{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;flex-direction:column;}
 
-/* ── Screens ── */
 .screen{display:none;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-bottom:80px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .screen::-webkit-scrollbar{display:none;}
 .screen.active{display:flex;flex-direction:column;}
 
-/* ── Nav ── */
-nav{
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:430px;
-  background:rgba(248,244,238,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-top:1px solid var(--border);display:flex;z-index:200;
-  padding-bottom:env(safe-area-inset-bottom,4px);
-}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 8px;background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:500;letter-spacing:.2px;transition:color .2s;}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(248,244,238,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,4px);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 8px;background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:500;transition:color .2s;}
 .nav-btn.active{color:var(--green);}
 .nav-btn svg{width:21px;height:21px;stroke-width:1.8;}
 
-/* ── Header ── */
 .page-header{padding:52px 22px 18px;display:flex;align-items:flex-start;justify-content:space-between;}
 .page-header h1{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--green);letter-spacing:-.3px;line-height:1.1;}
 .page-header .sub{font-size:12.5px;color:var(--muted);margin-top:3px;}
 
-/* ── Camera area ── */
-.camera-wrap{margin:0 22px;border-radius:var(--r);overflow:hidden;background:var(--green);position:relative;cursor:pointer;min-height:210px;display:flex;align-items:center;justify-content:center;transition:min-height .3s ease;}
-.camera-wrap.has-img{min-height:270px;}
-.cam-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;padding:40px 32px;text-align:center;pointer-events:none;}
-.cam-icon{width:58px;height:58px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
-.cam-icon svg{width:28px;height:28px;stroke:rgba(255,255,255,.85);}
-.cam-placeholder h3{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:#fff;}
-.cam-placeholder p{font-size:12.5px;color:rgba(255,255,255,.65);}
-#preview-img{width:100%;height:100%;object-fit:cover;display:none;min-height:270px;}
-.retake-btn{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.48);color:#fff;border:none;border-radius:20px;padding:6px 13px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;backdrop-filter:blur(4px);display:none;}
+/* Camera */
+.camera-wrap{margin:0 22px;border-radius:var(--r);overflow:hidden;background:var(--green);position:relative;cursor:pointer;min-height:195px;display:flex;align-items:center;justify-content:center;}
+.cam-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 32px;text-align:center;pointer-events:none;}
+.cam-icon{width:54px;height:54px;background:rgba(255,255,255,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:2px;}
+.cam-icon svg{width:25px;height:25px;stroke:rgba(255,255,255,.85);}
+.cam-placeholder h3{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:#fff;}
+.cam-placeholder p{font-size:12px;color:rgba(255,255,255,.6);}
+#preview-img{width:100%;min-height:220px;object-fit:cover;display:none;}
+.retake-btn{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.48);color:#fff;border:none;border-radius:20px;padding:6px 13px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;display:none;}
 
-/* ── Person picker ── */
-.section-label{padding:18px 22px 9px;font-size:10.5px;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);}
+/* Person picker */
+.section-label{padding:14px 22px 6px;font-size:10.5px;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);}
+.hint-label{padding:0 22px 9px;font-size:12px;color:var(--muted);min-height:20px;}
 .person-row{display:flex;gap:10px;padding:0 22px;}
-.person-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 8px 12px;background:var(--card);border:2px solid var(--border);border-radius:var(--r);cursor:pointer;transition:border-color .2s,background .2s;font-family:'DM Sans',sans-serif;}
-.person-btn .pemoji{font-size:26px;}
-.person-btn .pname{font-size:13px;font-weight:500;color:var(--text);transition:color .2s;}
+.person-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:13px 8px 11px;background:var(--card);border:2px solid var(--border);border-radius:var(--r);cursor:pointer;transition:border-color .18s,background .18s;font-family:'DM Sans',sans-serif;}
+.person-btn .pemoji{font-size:24px;}
+.person-btn .pname{font-size:13px;font-weight:500;color:var(--text);transition:color .18s;}
 .person-btn .prole{font-size:10px;color:var(--muted);}
 .person-btn.sel{border-color:var(--green-mid);background:rgba(61,102,34,.06);}
 .person-btn.sel .pname{color:var(--green-mid);}
 
-/* ── Analyze button ── */
-.analyze-btn{margin:16px 22px 8px;padding:16px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:15.5px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .1s;letter-spacing:.15px;}
-.analyze-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed;}
-.analyze-btn:not(:disabled):active{transform:scale(.98);}
-
-/* ── No-key banner ── */
 .no-key-banner{margin:10px 22px 0;background:#FFFBEA;border:1px solid #F0C040;border-radius:var(--r-sm);padding:10px 14px;font-size:12.5px;color:#6B4A00;cursor:pointer;display:none;}
 .no-key-banner strong{display:block;margin-bottom:1px;font-size:13px;}
 
-/* ── Loading ── */
+/* Loading */
 #screen-loading{align-items:center;justify-content:center;gap:22px;padding:40px 24px;}
-.loading-thumb{width:100px;height:100px;border-radius:var(--r-sm);object-fit:cover;}
-.spinner{width:38px;height:38px;border:3px solid var(--border);border-top-color:var(--green-mid);border-radius:50%;animation:spin .75s linear infinite;}
+.loading-thumb{width:96px;height:96px;border-radius:var(--r-sm);object-fit:cover;}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--green-mid);border-radius:50%;animation:spin .75s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
 .loading-copy{text-align:center;}
-.loading-copy h3{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;color:var(--green);margin-bottom:5px;}
+.loading-copy h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--green);margin-bottom:4px;}
 .loading-copy p{font-size:13px;color:var(--muted);}
 
-/* ── Results header ── */
-.results-hdr{padding:56px 22px 20px;background:var(--green);color:#fff;position:relative;overflow:hidden;}
-.results-hdr::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;}
-.results-hdr .rlabel{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;opacity:.55;margin-bottom:5px;}
-.results-hdr h2{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;margin-bottom:12px;position:relative;}
-.chip-row{display:flex;flex-wrap:wrap;gap:6px;position:relative;}
-.chip{background:rgba(255,255,255,.18);color:rgba(255,255,255,.9);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:500;text-transform:capitalize;}
+/* Results header */
+.results-hdr{padding:52px 22px 16px;background:var(--green);color:#fff;position:relative;overflow:hidden;}
+.results-hdr::before{content:'';position:absolute;inset:0;opacity:.04;background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='20' cy='20' r='2'/%3E%3C/g%3E%3C/svg%3E") repeat;}
+.results-hdr .rlabel{font-size:10px;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-bottom:4px;}
+.results-hdr h2{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;margin-bottom:10px;position:relative;line-height:1.2;}
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;position:relative;}
+.chip{background:rgba(255,255,255,.16);color:rgba(255,255,255,.88);padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:500;text-transform:capitalize;}
 .chip.superfood{background:var(--amber);color:#fff;font-weight:600;}
 
-/* ── Score cards ── */
-.results-body{padding:14px 22px 8px;display:flex;flex-direction:column;gap:13px;}
+/* Score pills */
+.scores-row{display:flex;gap:10px;padding:14px 22px 0;}
+.score-pill{flex:1;background:var(--card);border-radius:var(--r);padding:14px 8px 12px;text-align:center;box-shadow:var(--shadow);animation:slideUp .3s ease both;}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.score-pill .sp-emoji{font-size:22px;display:block;}
+.score-pill .sp-name{font-size:11px;font-weight:600;color:var(--text);margin:5px 0 2px;display:block;}
+.score-pill .sp-num{font-size:27px;font-weight:700;display:block;line-height:1;}
+.score-pill .sp-lbl{font-size:9.5px;color:var(--muted);margin-top:3px;display:block;}
 
-.score-card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);animation:slideUp .35s ease both;}
-@keyframes slideUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+/* Detail cards */
+.results-body{padding:10px 22px 0;display:flex;flex-direction:column;gap:10px;}
+.detail-card{background:var(--card);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);animation:slideUp .3s ease both;}
+.dh{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.dh-emoji{font-size:18px;}
+.dh-name{font-size:14px;font-weight:600;}
+.dh-age{font-size:11px;color:var(--muted);margin-left:2px;}
+.verdict{font-size:12.5px;color:var(--muted);margin-bottom:8px;line-height:1.5;font-style:italic;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{padding:3px 9px;border-radius:12px;font-size:11px;font-weight:500;}
+.tag.good{background:rgba(106,158,70,.12);color:var(--green-mid);}
+.tag.warn{background:rgba(217,96,58,.1);color:#A84020;}
+.serving-mini{margin-top:10px;background:rgba(106,158,70,.07);border-radius:var(--r-sm);padding:10px 12px;border-left:3px solid var(--green-lt);}
+.serving-mini .slabel{font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--green-mid);margin-bottom:3px;}
+.serving-mini p{font-size:12px;line-height:1.55;color:var(--text);}
 
-.card-top{display:flex;align-items:center;gap:12px;margin-bottom:13px;}
-.person-meta{flex:1;}
-.person-meta h3{font-size:16px;font-weight:600;display:flex;align-items:center;gap:6px;}
-.person-meta p{font-size:11.5px;color:var(--muted);margin-top:1px;}
+.superfood-banner{margin:10px 22px 0;background:#FFFBEA;border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:#7A4A00;border-left:3px solid var(--amber);}
 
-/* Ring */
-.ring-wrap{position:relative;width:62px;height:62px;flex-shrink:0;}
-.ring-wrap svg{width:62px;height:62px;}
-.ring-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;}
+/* Recipe */
+.recipe-section{margin:12px 22px 0;}
+.recipe-btn{width:100%;padding:13px;background:rgba(36,62,20,.07);color:var(--green);border:1.5px solid rgba(36,62,20,.15);border-radius:var(--r);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.recipe-btn:active{background:rgba(36,62,20,.12);}
+.recipe-dishes{margin-top:10px;display:flex;flex-direction:column;gap:7px;}
+.dish-item{background:var(--card);border-radius:var(--r-sm);padding:12px 14px;font-size:13.5px;font-weight:500;color:var(--text);box-shadow:var(--shadow);animation:slideUp .25s ease both;}
 
-.summary{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:11px;}
-
-.points{display:flex;flex-direction:column;gap:5px;}
-.pt{display:flex;align-items:flex-start;gap:7px;font-size:12.5px;}
-.pt .dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0;}
-.pt.good{color:var(--text);}
-.pt.good .dot{background:var(--green-lt);}
-.pt.warn{color:#A84020;}
-.pt.warn .dot{background:var(--coral);}
-
-/* Superfood callout */
-.superfood-note{margin-bottom:10px;background:#FFFBEA;border-radius:9px;padding:9px 11px;font-size:12px;color:#7A4A00;border-left:3px solid var(--amber);}
-
-/* Sol serving box */
-.serving-box{margin-top:11px;background:rgba(106,158,70,.08);border-radius:var(--r-sm);padding:12px 14px;border-left:3px solid var(--green-lt);}
-.serving-label{font-size:10px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;color:var(--green-mid);margin-bottom:5px;}
-.serving-box p{font-size:12.5px;line-height:1.65;color:var(--text);}
-
-/* ── Clarification ── */
-.clarify-card{background:#FFFDF5;border:1.5px solid #F0C040;border-radius:var(--r);padding:18px;margin:0 22px;}
-.clarify-card h4{font-size:14.5px;font-weight:600;color:#5A3A00;margin-bottom:7px;}
+/* Clarification */
+.clarify-card{background:#FFFDF5;border:1.5px solid #F0C040;border-radius:var(--r);padding:16px;margin:10px 22px 0;}
+.clarify-card h4{font-size:14px;font-weight:600;color:#5A3A00;margin-bottom:6px;}
 .clarify-card p{font-size:13px;color:#6B4A00;margin-bottom:12px;line-height:1.6;}
-.clarify-input{width:100%;padding:11px 13px;border:1.5px solid #D4A820;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;background:#fff;color:var(--text);margin-bottom:10px;}
+.clarify-input{width:100%;padding:10px 13px;border:1.5px solid #D4A820;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;background:#fff;color:var(--text);margin-bottom:10px;}
 .clarify-input:focus{outline:none;border-color:var(--amber);}
 .clarify-submit{width:100%;padding:12px;background:var(--amber);color:#fff;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
 
-/* ── Action row ── */
-.action-row{display:flex;gap:10px;padding:2px 22px 16px;}
-.act-btn{flex:1;padding:13px;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;cursor:pointer;border:none;transition:transform .1s;}
+/* Action row */
+.action-row{display:flex;gap:10px;padding:12px 22px 8px;}
+.act-btn{flex:1;padding:13px;border-radius:var(--r-sm);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;transition:transform .1s;}
 .act-btn:active{transform:scale(.97);}
 .act-btn.primary{background:var(--green);color:#fff;}
 .act-btn.secondary{background:var(--border);color:var(--text);}
 
-/* ── History ── */
+/* History */
 .history-list{padding:0 22px;display:flex;flex-direction:column;gap:10px;}
 .h-item{background:var(--card);border-radius:var(--r);padding:13px 14px;display:flex;gap:12px;align-items:center;cursor:pointer;box-shadow:var(--shadow);transition:transform .1s;}
 .h-item:active{transform:scale(.99);}
@@ -167,7 +138,7 @@ nav{
 .empty-state .eicon{font-size:44px;margin-bottom:12px;}
 .empty-state p{font-size:13.5px;}
 
-/* ── Settings ── */
+/* Settings */
 .settings-body{padding:0 22px;display:flex;flex-direction:column;gap:15px;}
 .s-card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--shadow);}
 .s-card h3{font-size:14px;font-weight:600;margin-bottom:5px;}
@@ -175,720 +146,494 @@ nav{
 .s-input{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;background:var(--bg);color:var(--text);}
 .s-input:focus{outline:none;border-color:var(--green-mid);}
 .s-save{margin-top:10px;width:100%;padding:12px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;}
-.profile-rows{display:flex;flex-direction:column;gap:0;}
+.profile-rows{display:flex;flex-direction:column;}
 .prow{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--border);}
 .prow:last-child{border-bottom:none;padding-bottom:0;}
 .prow .pemoji2{font-size:22px;margin-top:1px;}
 .prow h4{font-size:13.5px;font-weight:600;}
 .prow p{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.5;}
 
-/* ── Toast ── */
 .toast{position:fixed;top:22px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;font-weight:500;z-index:999;pointer-events:none;animation:tin .28s ease,tout .28s ease 1.72s forwards;}
 @keyframes tin{from{opacity:0;transform:translateX(-50%) translateY(-8px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
 @keyframes tout{to{opacity:0;transform:translateX(-50%) translateY(-8px);}}
-
-/* ── Error state ── */
-.error-box{margin:16px 22px;background:#FFF0EE;border:1.5px solid #F0A0A0;border-radius:var(--r-sm);padding:14px;font-size:13px;color:#8B2020;}
-.error-box strong{display:block;margin-bottom:4px;}
+.error-box{margin:12px 22px 0;background:#FFF0EE;border:1.5px solid #F0A0A0;border-radius:var(--r-sm);padding:13px;font-size:13px;color:#8B2020;}
+.error-box strong{display:block;margin-bottom:3px;}
 </style>
 </head>
 <body>
 <div id="app">
 
-<!-- ════════════════════ HOME ════════════════════ -->
+<!-- HOME -->
 <div id="screen-home" class="screen active">
   <div class="page-header">
-    <div>
-      <h1>NutriScan</h1>
-      <p class="sub">Smart food analysis for your family</p>
-    </div>
+    <div><h1>NutriScan</h1><p class="sub">Smart food analysis for your family</p></div>
   </div>
-
   <div id="no-key-banner" class="no-key-banner" onclick="showScreen('settings')">
-    <strong>⚠️ API Key Required</strong>
-    Tap to add your Anthropic API key in Settings →
+    <strong>⚠️ API Key Required</strong>Tap to add your key in Settings →
   </div>
-
   <input type="file" id="file-input" accept="image/*" capture="environment" style="display:none">
-
   <div class="camera-wrap" id="camera-wrap" onclick="document.getElementById('file-input').click()">
     <div class="cam-placeholder" id="cam-placeholder">
-      <div class="cam-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      </div>
+      <div class="cam-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
       <h3>Take a Photo</h3>
-      <p>Point at food, packaging, or your plate</p>
+      <p>Food, packaging, or your plate</p>
     </div>
     <img id="preview-img" alt="Food preview">
     <button class="retake-btn" id="retake-btn" onclick="event.stopPropagation();retakePhoto()">↺ Retake</button>
   </div>
-
   <div class="section-label">Analyzing for</div>
+  <p class="hint-label" id="hint-label">Select who, then take a photo</p>
   <div class="person-row">
     <button class="person-btn" id="btn-gal" onclick="togglePerson('gal')">
-      <span class="pemoji">🏋️</span>
-      <span class="pname">Gal</span>
-      <span class="prole" id="gal-age-label">–</span>
+      <span class="pemoji">🏋️</span><span class="pname">Gal</span><span class="prole" id="gal-age-label">–</span>
     </button>
     <button class="person-btn" id="btn-shelly" onclick="togglePerson('shelly')">
-      <span class="pemoji">🌸</span>
-      <span class="pname">Shelly</span>
-      <span class="prole" id="shelly-age-label">–</span>
+      <span class="pemoji">🧘‍♀️</span><span class="pname">Shelly</span><span class="prole" id="shelly-age-label">–</span>
     </button>
     <button class="person-btn" id="btn-sol" onclick="togglePerson('sol')">
-      <span class="pemoji">👶</span>
-      <span class="pname">Sol</span>
-      <span class="prole" id="sol-age-label">Baby</span>
+      <span class="pemoji">👶</span><span class="pname">Sol</span><span class="prole" id="sol-age-label">–</span>
     </button>
   </div>
-
-  <button class="analyze-btn" id="analyze-btn" disabled onclick="startAnalysis()">
-    Analyze Food
-  </button>
 </div>
 
-<!-- ════════════════════ LOADING ════════════════════ -->
+<!-- LOADING -->
 <div id="screen-loading" class="screen">
   <img id="loading-thumb" class="loading-thumb" src="" alt="">
   <div class="spinner"></div>
   <div class="loading-copy">
-    <h3>Analyzing…</h3>
-    <p id="loading-for">Getting personalized insights</p>
+    <h3>Analyzing…</h3><p id="loading-for">Getting personalized insights</p>
   </div>
 </div>
 
-<!-- ════════════════════ RESULTS ════════════════════ -->
+<!-- RESULTS -->
 <div id="screen-results" class="screen">
   <div class="results-hdr">
     <div class="rlabel">Food Analysis</div>
     <h2 id="result-name">—</h2>
     <div class="chip-row" id="chip-row"></div>
   </div>
+  <div id="superfood-banner"></div>
+  <div class="scores-row" id="scores-row"></div>
   <div class="results-body" id="results-body"></div>
+  <div class="recipe-section">
+    <button class="recipe-btn" id="recipe-btn" onclick="suggestRecipes()"><span>👨‍🍳</span> Suggest a Recipe</button>
+    <div class="recipe-dishes" id="recipe-dishes" style="display:none"></div>
+  </div>
   <div class="action-row">
     <button class="act-btn primary" onclick="saveResult()">💾 Save</button>
-    <button class="act-btn secondary" onclick="scanAgain()">📸 Scan Again</button>
+    <button class="act-btn secondary" onclick="scanAgain()">📸 New Scan</button>
   </div>
 </div>
 
-<!-- ════════════════════ HISTORY ════════════════════ -->
+<!-- HISTORY -->
 <div id="screen-history" class="screen">
   <div class="page-header">
-    <div>
-      <h1>History</h1>
-      <p class="sub">Your scanned foods</p>
-    </div>
+    <div><h1>History</h1><p class="sub">Your scanned foods</p></div>
     <button onclick="clearHistory()" style="background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;align-self:center;margin-top:18px;">Clear all</button>
   </div>
   <div class="history-list" id="history-list"></div>
 </div>
 
-<!-- ════════════════════ SETTINGS ════════════════════ -->
+<!-- SETTINGS -->
 <div id="screen-settings" class="screen">
-  <div class="page-header">
-    <div>
-      <h1>Settings</h1>
-      <p class="sub">Configure NutriScan</p>
-    </div>
-  </div>
+  <div class="page-header"><div><h1>Settings</h1><p class="sub">Configure NutriScan</p></div></div>
   <div class="settings-body">
-
     <div class="s-card">
       <h3>Anthropic API Key</h3>
-      <p class="s-desc">Get a free key at <strong>console.anthropic.com</strong>. Stored only on this device — never sent anywhere except Anthropic.</p>
+      <p class="s-desc">Get your key at <strong>console.anthropic.com</strong>. Stored only on this device.</p>
       <input class="s-input" type="password" id="api-key-input" placeholder="sk-ant-api03-…">
       <button class="s-save" onclick="saveApiKey()">Save Key</button>
     </div>
-
     <div class="s-card">
       <h3>Family Profiles</h3>
       <div class="profile-rows">
-        <div class="prow">
-          <span class="pemoji2">🏋️</span>
-          <div>
-            <h4>Gal</h4>
-            <p>Muscle building • Elevated blood sugar • Hypertension tendency • Active: swim, gym, run, cycle</p>
-          </div>
-        </div>
-        <div class="prow">
-          <span class="pemoji2">🌸</span>
-          <div>
-            <h4>Shelly</h4>
-            <p>Maintain weight • Improve fitness • Reducing added sugars</p>
-          </div>
-        </div>
-        <div class="prow">
-          <span class="pemoji2">👶</span>
-          <div>
-            <h4>Sol</h4>
-            <p>Born Sep 10, 2025 · <span id="sol-settings-age">–</span> · Solids since ~7 months</p>
-          </div>
-        </div>
+        <div class="prow"><span class="pemoji2">🏋️</span><div><h4>Gal</h4><p>Muscle building · Elevated blood sugar · Hypertension tendency · Active: swim, gym, run, cycle</p></div></div>
+        <div class="prow"><span class="pemoji2">🧘‍♀️</span><div><h4>Shelly</h4><p>Maintain weight · Improve fitness · Reducing added sugars</p></div></div>
+        <div class="prow"><span class="pemoji2">👶</span><div><h4>Sol</h4><p>Born Sep 10, 2025 · <span id="sol-settings-age">–</span> · Solids since ~7 months</p></div></div>
       </div>
     </div>
-
     <div class="s-card">
       <h3>Install as App on iPhone</h3>
-      <p class="s-desc">Open this page in Safari → tap the Share button → "Add to Home Screen". You'll get a full-screen app icon with no browser chrome.</p>
+      <p class="s-desc">Open in Safari → Share → "Add to Home Screen"</p>
     </div>
-
-    <div class="s-card">
-      <h3>Host this File</h3>
-      <p class="s-desc">For best PWA experience, host <em>nutriscan.html</em> on <strong>Vercel</strong> or <strong>Netlify</strong> (both free). Drag the file in and you'll get a shareable URL to add to your home screen.</p>
-    </div>
-
   </div>
 </div>
 
-<!-- ════════════════════ BOTTOM NAV ════════════════════ -->
+<!-- NAV -->
 <nav>
   <button class="nav-btn active" id="nav-home" onclick="showScreen('home')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-    Scan
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Scan
   </button>
   <button class="nav-btn" id="nav-history" onclick="showScreen('history')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    History
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>History
   </button>
   <button class="nav-btn" id="nav-settings" onclick="showScreen('settings')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
-    Settings
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Settings
   </button>
 </nav>
-
-</div><!-- #app -->
+</div>
 
 <script>
-// ──────────────────────────────────────────────
-//  Constants
-// ──────────────────────────────────────────────
 const SOL_DOB    = new Date('2025-09-10T00:00:00');
 const GAL_DOB    = new Date('1994-11-13T00:00:00');
 const SHELLY_DOB = new Date('1994-06-22T00:00:00');
-const API_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL   = 'claude-sonnet-4-5-20250929';
+const API_URL    = 'https://api.anthropic.com/v1/messages';
+const MODEL      = 'claude-sonnet-4-5-20250929';
 
-// ──────────────────────────────────────────────
-//  State
-// ──────────────────────────────────────────────
-let capturedImage    = null;   // base64 JPEG string
-let selectedPeople   = new Set();
-let lastResult       = null;
-let lastPeople       = [];
-let scanHistory      = JSON.parse(localStorage.getItem('ns_history') || '[]');
-let apiKey           = localStorage.getItem('ns_apikey') || '';
+let capturedImage  = null;
+let selectedPeople = new Set();
+let lastResult     = null;
+let lastPeople     = [];
+let scanHistory    = JSON.parse(localStorage.getItem('ns_history') || '[]');
+let apiKey         = localStorage.getItem('ns_apikey') || '';
 
-// ──────────────────────────────────────────────
-//  Init
-// ──────────────────────────────────────────────
 function init() {
   updateAges();
   updateNoKeyBanner();
   if (apiKey) document.getElementById('api-key-input').value = apiKey;
   document.getElementById('file-input').addEventListener('change', onFileSelect);
-  updateAnalyzeBtn();
+  updateHint();
 }
 
-function updateAges() {
-  const el1 = document.getElementById('gal-age-label');
-  const el2 = document.getElementById('shelly-age-label');
-  const el3 = document.getElementById('sol-age-label');
-  const el4 = document.getElementById('sol-settings-age');
-  if (el1) el1.textContent = ageLabel(GAL_DOB);
-  if (el2) el2.textContent = ageLabel(SHELLY_DOB);
-  if (el3) el3.textContent = solAgeText();
-  if (el4) el4.textContent = solAgeText();
-}
-
+// Ages
 function ageYears(dob) {
   const now = new Date();
-  let age = now.getFullYear() - dob.getFullYear();
-  const notYet = now.getMonth() < dob.getMonth() ||
-    (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate());
-  if (notYet) age--;
-  return age;
+  let a = now.getFullYear() - dob.getFullYear();
+  if (now.getMonth() < dob.getMonth() || (now.getMonth()===dob.getMonth() && now.getDate()<dob.getDate())) a--;
+  return a;
 }
-function ageLabel(dob) {
-  return `${ageYears(dob)} y.o.`;
-}
-
-// ──────────────────────────────────────────────
-//  Sol Age Helpers
-// ──────────────────────────────────────────────
 function solAgeMonths() {
   const now = new Date();
-  let m = (now.getFullYear() - SOL_DOB.getFullYear()) * 12
-        + (now.getMonth()    - SOL_DOB.getMonth());
-  if (now.getDate() < SOL_DOB.getDate()) m--;
-  return Math.max(0, m);
+  let m = (now.getFullYear()-SOL_DOB.getFullYear())*12 + (now.getMonth()-SOL_DOB.getMonth());
+  if (now.getDate()<SOL_DOB.getDate()) m--;
+  return Math.max(0,m);
 }
 function solAgeText() {
-  const now  = new Date();
-  const days = Math.floor((now - SOL_DOB) / 86400000);
-  const mo   = Math.floor(days / 30.44);
-  const d    = Math.round(days - mo * 30.44);
-  if (mo === 0) return `${days}d old`;
-  if (d < 5) return `${mo} months old`;
+  const days = Math.floor((new Date()-SOL_DOB)/86400000);
+  const mo = Math.floor(days/30.44), d = Math.round(days-mo*30.44);
+  if (mo===0) return `${days}d old`;
+  if (d<5)   return `${mo} months old`;
   return `${mo}m ${d}d old`;
 }
-
-
-// ──────────────────────────────────────────────
-//  Screen Navigation
-// ──────────────────────────────────────────────
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(`screen-${name}`).classList.add('active');
-  const nb = document.getElementById(`nav-${name}`);
-  if (nb) nb.classList.add('active');
-  if (name === 'history') renderHistory();
-  if (name === 'settings') {
-    updateAges();
-    if (apiKey) document.getElementById('api-key-input').value = apiKey;
-  }
+function updateAges() {
+  const set = (id,v) => { const e=document.getElementById(id); if(e) e.textContent=v; };
+  set('gal-age-label',   `${ageYears(GAL_DOB)} y.o.`);
+  set('shelly-age-label',`${ageYears(SHELLY_DOB)} y.o.`);
+  set('sol-age-label',   solAgeText());
+  set('sol-settings-age',solAgeText());
 }
 
-// ──────────────────────────────────────────────
-//  Camera / Image
-// ──────────────────────────────────────────────
+// Navigation
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  const nb=document.getElementById(`nav-${name}`); if(nb) nb.classList.add('active');
+  if (name==='history') renderHistory();
+  if (name==='settings') { updateAges(); if(apiKey) document.getElementById('api-key-input').value=apiKey; }
+}
+
+// Camera
 function onFileSelect(e) {
-  const file = e.target.files[0];
-  if (!file) return;
+  const file = e.target.files[0]; if (!file) return;
   compressImage(file).then(b64 => {
     capturedImage = b64;
     const img = document.getElementById('preview-img');
-    img.src = `data:image/jpeg;base64,${b64}`;
-    img.style.display = 'block';
-    document.getElementById('cam-placeholder').style.display = 'none';
-    document.getElementById('retake-btn').style.display = 'block';
-    document.getElementById('camera-wrap').classList.add('has-img');
-    updateAnalyzeBtn();
+    img.src = `data:image/jpeg;base64,${b64}`; img.style.display='block';
+    document.getElementById('cam-placeholder').style.display='none';
+    document.getElementById('retake-btn').style.display='block';
+    updateHint();
+    if (selectedPeople.size > 0) startAnalysis(); // auto-trigger
   });
-  e.target.value = '';
+  e.target.value='';
 }
-
 function retakePhoto() {
-  capturedImage = null;
-  const img = document.getElementById('preview-img');
-  img.style.display = 'none';
-  img.src = '';
-  document.getElementById('cam-placeholder').style.display = 'flex';
-  document.getElementById('retake-btn').style.display = 'none';
-  document.getElementById('camera-wrap').classList.remove('has-img');
-  updateAnalyzeBtn();
+  capturedImage=null;
+  const img=document.getElementById('preview-img'); img.style.display='none'; img.src='';
+  document.getElementById('cam-placeholder').style.display='flex';
+  document.getElementById('retake-btn').style.display='none';
+  updateHint();
 }
-
 function compressImage(file) {
   return new Promise(resolve => {
-    const url = URL.createObjectURL(file);
-    const img = new Image();
-    img.onload = () => {
-      const MAX = 1024;
-      let {width: w, height: h} = img;
-      if (w > h && w > MAX) { h = h/w*MAX; w = MAX; }
-      else if (h > MAX)     { w = w/h*MAX; h = MAX; }
-      const c = document.createElement('canvas');
-      c.width  = Math.round(w);
-      c.height = Math.round(h);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    const url=URL.createObjectURL(file), img=new Image();
+    img.onload=()=>{
+      const MAX=1024; let{width:w,height:h}=img;
+      if(w>h&&w>MAX){h=h/w*MAX;w=MAX;}else if(h>MAX){w=w/h*MAX;h=MAX;}
+      const c=document.createElement('canvas'); c.width=Math.round(w); c.height=Math.round(h);
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
       URL.revokeObjectURL(url);
-      resolve(c.toDataURL('image/jpeg', 0.82).split(',')[1]);
-    };
-    img.src = url;
+      resolve(c.toDataURL('image/jpeg',.82).split(',')[1]);
+    }; img.src=url;
   });
 }
 
-// ──────────────────────────────────────────────
-//  Person Selection
-// ──────────────────────────────────────────────
+// Person selection
 function togglePerson(id) {
-  if (selectedPeople.has(id)) selectedPeople.delete(id);
-  else selectedPeople.add(id);
-  document.getElementById(`btn-${id}`).classList.toggle('sel', selectedPeople.has(id));
-  updateAnalyzeBtn();
+  if (selectedPeople.has(id)) {
+    selectedPeople.delete(id);
+    document.getElementById(`btn-${id}`).classList.remove('sel');
+    updateHint(); return;
+  }
+  selectedPeople.add(id);
+  document.getElementById(`btn-${id}`).classList.add('sel');
+  updateHint();
+  if (capturedImage) startAnalysis(); // auto-trigger
 }
 
-function updateAnalyzeBtn() {
-  const btn   = document.getElementById('analyze-btn');
-  const ready = capturedImage && selectedPeople.size > 0 && apiKey;
-  btn.disabled = !ready;
-  if (!apiKey && capturedImage && selectedPeople.size > 0) {
-    btn.textContent = '⚠️ Set API Key First';
-  } else if (!capturedImage) {
-    btn.textContent = 'Take a Photo First';
-  } else if (selectedPeople.size === 0) {
-    btn.textContent = 'Select Someone';
-  } else {
-    const names = [...selectedPeople].map(p => p[0].toUpperCase() + p.slice(1));
-    btn.textContent = `Analyze for ${names.join(' & ')}`;
-  }
+function updateHint() {
+  const hint = document.getElementById('hint-label');
+  if (!capturedImage && selectedPeople.size===0) hint.textContent='Select who, then take a photo';
+  else if (!capturedImage) { const n=[...selectedPeople].map(p=>p[0].toUpperCase()+p.slice(1)).join(' & '); hint.textContent=`Ready for ${n} — now take a photo`; }
+  else if (selectedPeople.size===0) hint.textContent='Photo ready — tap a person to start';
+  else hint.textContent='Starting analysis…';
 }
 
 function updateNoKeyBanner() {
   document.getElementById('no-key-banner').style.display = apiKey ? 'none' : 'block';
 }
 
-// ──────────────────────────────────────────────
-//  Analysis
-// ──────────────────────────────────────────────
-async function startAnalysis(clarification = null) {
+// Analysis
+async function startAnalysis(clarification=null) {
   if (!apiKey) { showScreen('settings'); return; }
-
-  lastPeople = [...selectedPeople];
-
-  // Show loading
+  lastPeople=[...selectedPeople];
   showScreen('loading');
-  document.getElementById('loading-thumb').src = `data:image/jpeg;base64,${capturedImage}`;
-  const names = lastPeople.map(p => p[0].toUpperCase() + p.slice(1));
-  document.getElementById('loading-for').textContent = `Analyzing for ${names.join(', ')}…`;
-
+  document.getElementById('loading-thumb').src=`data:image/jpeg;base64,${capturedImage}`;
+  document.getElementById('loading-for').textContent=`Analyzing for ${lastPeople.map(p=>p[0].toUpperCase()+p.slice(1)).join(', ')}…`;
   try {
     const data = await callAPI(clarification);
-    lastResult = data;
-    renderResults(data);
-    showScreen('results');
-  } catch (err) {
-    showScreen('home');
-    showError(err.message || 'Analysis failed. Check your API key and try again.');
-    console.error(err);
+    lastResult=data; renderResults(data); showScreen('results');
+  } catch(err) {
+    showScreen('home'); showError(err.message||'Analysis failed'); console.error(err);
   }
 }
 
 function buildSystemPrompt() {
-  const ageM = solAgeMonths();
-  const solidMonths = Math.max(1, ageM - 6);
-  return `You are a nutritionist AI for the Adler family. Analyze food images and return a strict JSON assessment with no extra text.
+  const ageM=solAgeMonths();
+  return `You are a nutritionist AI for the Adler family. Return ONLY a JSON object, no markdown.
 
-FAMILY PROFILES:
+PROFILES:
+GAL (${ageYears(GAL_DOB)}y male): Build muscle, elevated blood sugar (avoid high GI/hidden sugars), hypertension tendency (flag sodium >300mg), active (swim/gym/run/cycle). Need: complete protein, complex carbs, low sodium, low GI.
+SHELLY (${ageYears(SHELLY_DOB)}y female): Maintain weight, improve fitness, reduce added sugars.
+SOL (${ageM} months): NO honey, NO salt, NO sugar, NO whole nuts. Soft/mashable only. 1-3 tbsp portions. Always include serving suggestion.
 
-GAL (adult male, ~30s):
-• Goal: Build muscle mass (not lose weight) — needs high-quality protein
-• Health: Elevated blood sugar — flag high GI foods, refined carbs, hidden sugars, fruit juices
-• Health: Genetic hypertension tendency — flag sodium >300mg/serving, processed/cured meats
-• Lifestyle: Will swim, gym, run, cycle — needs sustained energy and recovery foods
-• Prioritize: Complete proteins, complex carbs, omega-3s, low sodium, low glycemic load
-
-SHELLY (adult female, ~30s):
-• Goal: Maintain current weight while improving fitness
-• Focus: Reducing sweets and added sugars
-• No other known health issues
-• Prioritize: Balanced macros, low added sugar, micronutrient density
-
-SOL (baby, born September 10 2025, currently ${ageM} months old, eating solids for ~${solidMonths} months):
-• ABSOLUTE rules: NO honey, NO added salt, NO added sugar, NO whole nuts, NO hard pieces
-• Texture: Must be soft, mashable, or pureeable. No choking hazards whatsoever.
-• Cow's milk: small amounts in food/cooking OK, not as main drink
-• Allergens: Be cautious — eggs, dairy, tree nuts, peanuts, wheat, soy, fish, shellfish
-• Portions: Very small — 1-3 tablespoons per food item
-• Always give a SPECIFIC serving suggestion: how to prepare, portion size, texture guidance
-• Score conservatively — if any doubt about safety at this age, score 1-4 and explain clearly
-
-RESPONSE FORMAT — return ONLY valid JSON, no markdown fences, no preamble:
+JSON schema:
 {
-  "product_name": "specific name of the food or product",
-  "identified_as": "one-line description of what it is",
-  "food_categories": ["list from: protein, carbohydrate, fat, fiber, vitamins, minerals, probiotic, antioxidant, natural sugar, added sugar"],
-  "is_superfood": true or false,
-  "superfood_note": "reason if superfood, else empty string",
-  "clarification_needed": null OR "a specific question to better identify the food",
-  "scores": {
-    ${lastPeople.includes('gal') ? `"gal": {
-      "score": integer 1-10,
-      "summary": "2-3 sentences tailored to Gal's goals and health",
-      "highlights": ["up to 3 specific positives for Gal"],
-      "warnings": ["up to 3 specific concerns for Gal, empty array if none"]
-    }` : ''}${lastPeople.includes('gal') && lastPeople.includes('shelly') ? ',' : ''}
-    ${lastPeople.includes('shelly') ? `"shelly": {
-      "score": integer 1-10,
-      "summary": "2-3 sentences tailored to Shelly's goals",
-      "highlights": ["up to 3 specific positives for Shelly"],
-      "warnings": ["up to 3 concerns, empty array if none"]
-    }` : ''}${lastPeople.includes('shelly') && lastPeople.includes('sol') ? ',' : ''}
-    ${lastPeople.includes('sol') ? `"sol": {
-      "score": integer 1-10,
-      "summary": "2-3 sentences for a ${ageM}-month-old",
-      "highlights": ["up to 3 positives"],
-      "warnings": ["up to 3 concerns including any safety flags"],
-      "serving_suggestion": "specific preparation and serving instructions for a ${ageM}-month-old: texture, portion, method"
-    }` : ''}
+  "product_name":"name",
+  "identified_as":"brief description",
+  "food_categories":["protein","carbohydrate","fat","fiber","vitamins","minerals","probiotic","antioxidant"],
+  "is_superfood":boolean,
+  "superfood_note":"reason or empty",
+  "clarification_needed":null,
+  "scores":{
+    ${lastPeople.includes('gal')?'"gal":{"score":1-10,"verdict":"one crisp sentence","highlights":["up to 3 short"],"warnings":["up to 3 short or empty"]},':""}
+    ${lastPeople.includes('shelly')?'"shelly":{"score":1-10,"verdict":"one crisp sentence","highlights":["up to 3"],"warnings":["up to 3 or empty"]},':""}
+    ${lastPeople.includes('sol')?`"sol":{"score":1-10,"verdict":"one crisp sentence","highlights":["up to 3"],"warnings":["up to 3"],"serving_suggestion":"specific prep for ${ageM}-month-old"}`:""}
   }
 }`;
 }
 
-async function callAPI(clarification = null) {
-  const userContent = [
-    {
-      type: 'image',
-      source: { type: 'base64', media_type: 'image/jpeg', data: capturedImage }
-    },
-    {
-      type: 'text',
-      text: clarification
-        ? `Additional context from user: "${clarification}"\n\nNow provide the complete JSON analysis for: ${lastPeople.join(', ')}.`
-        : `Please analyze this food image and return the JSON assessment for: ${lastPeople.join(', ')}.`
-    }
-  ];
-
+async function callAPI(clarification=null) {
   const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
     body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 1400,
-      system: buildSystemPrompt(),
-      messages: [{ role: 'user', content: userContent }]
+      model:MODEL, max_tokens:1200,
+      system:buildSystemPrompt(),
+      messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:'image/jpeg',data:capturedImage}},
+        {type:'text',text:clarification?`Context: "${clarification}". JSON for: ${lastPeople.join(', ')}.`:`Analyze for: ${lastPeople.join(', ')}.`}
+      ]}]
     })
   });
-
   if (!res.ok) {
-    let msg = `API error ${res.status}`;
-    try {
-      const e = await res.json();
-      msg = e.error?.message || JSON.stringify(e) || msg;
-    } catch {}
-    throw new Error(`${res.status}: ${msg}`);
+    let msg=`Error ${res.status}`;
+    try{const e=await res.json();msg=`${res.status}: ${e.error?.message||JSON.stringify(e)}`;}catch{}
+    throw new Error(msg);
   }
-
-  const data = await res.json();
-  const raw  = (data.content || []).map(b => b.text || '').join('');
-  const clean = raw.replace(/```json|```/gi, '').trim();
-
-  try {
-    return JSON.parse(clean);
-  } catch {
-    const match = clean.match(/\{[\s\S]*\}/);
-    if (match) return JSON.parse(match[0]);
-    throw new Error('Could not parse AI response as JSON');
-  }
+  const data=await res.json();
+  const raw=(data.content||[]).map(b=>b.text||'').join('');
+  const clean=raw.replace(/```json|```/gi,'').trim();
+  try{return JSON.parse(clean);}
+  catch{const m=clean.match(/\{[\s\S]*\}/);if(m)return JSON.parse(m[0]);throw new Error('Could not parse response');}
 }
 
-// ──────────────────────────────────────────────
-//  Render Results
-// ──────────────────────────────────────────────
-function scoreColor(s) {
-  if (s >= 9) return '#1E3C0E';
-  if (s >= 7) return '#6A9E46';
-  if (s >= 5) return '#E8A020';
-  return '#C94040';
-}
+// Render results
+function scoreColor(s){return s>=9?'#1E3C0E':s>=7?'#6A9E46':s>=5?'#E8A020':'#C94040';}
+function scoreLabel(s){return s>=9?'Excellent':s>=7?'Good':s>=5?'Okay':'Caution';}
 
-function ringHTML(score) {
-  const r = 25, C = 2 * Math.PI * r;
-  const off = (C * (1 - score / 10)).toFixed(2);
-  const col = scoreColor(score);
-  return `<div class="ring-wrap">
-    <svg viewBox="0 0 62 62">
-      <circle cx="31" cy="31" r="${r}" fill="none" stroke="#E2DDD4" stroke-width="5.5"/>
-      <circle cx="31" cy="31" r="${r}" fill="none" stroke="${col}" stroke-width="5.5"
-        stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${off}"
-        stroke-linecap="round" transform="rotate(-90 31 31)"/>
-    </svg>
-    <div class="ring-num" style="color:${col}">${score}</div>
-  </div>`;
-}
+const PC={
+  gal:   {emoji:'🏋️', name:'Gal',    dob:GAL_DOB},
+  shelly:{emoji:'🧘‍♀️', name:'Shelly', dob:SHELLY_DOB},
+  sol:   {emoji:'👶',  name:'Sol',    dob:null}
+};
 
 function renderResults(data) {
-  // Header
-  document.getElementById('result-name').textContent = data.product_name || 'Unknown Food';
+  document.getElementById('result-name').textContent=data.product_name||'Unknown Food';
 
   // Chips
-  const chipRow = document.getElementById('chip-row');
-  chipRow.innerHTML = '';
-  if (data.is_superfood) chipRow.innerHTML += `<span class="chip superfood">⭐ Superfood</span>`;
-  (data.food_categories || []).forEach(c => {
-    chipRow.innerHTML += `<span class="chip">${c}</span>`;
-  });
+  const cr=document.getElementById('chip-row'); cr.innerHTML='';
+  if(data.is_superfood) cr.innerHTML+=`<span class="chip superfood">⭐ Superfood</span>`;
+  (data.food_categories||[]).forEach(c=>cr.innerHTML+=`<span class="chip">${c}</span>`);
 
-  const body = document.getElementById('results-body');
-  body.innerHTML = '';
+  // Superfood banner
+  const sb=document.getElementById('superfood-banner');
+  sb.innerHTML=data.is_superfood&&data.superfood_note?`<div class="superfood-banner">⭐ ${data.superfood_note}</div>`:'';
 
-  // Clarification needed
+  // Reset recipe
+  document.getElementById('recipe-btn').style.display='flex';
+  document.getElementById('recipe-btn').innerHTML='<span>👨‍🍳</span> Suggest a Recipe';
+  document.getElementById('recipe-dishes').style.display='none';
+  document.getElementById('recipe-dishes').innerHTML='';
+
   if (data.clarification_needed) {
-    body.innerHTML = `
+    document.getElementById('scores-row').innerHTML='';
+    document.getElementById('results-body').innerHTML=`
       <div class="clarify-card">
         <h4>🤔 One quick question</h4>
         <p>${data.clarification_needed}</p>
         <input class="clarify-input" id="clarify-in" type="text" placeholder="Your answer…">
         <button class="clarify-submit" onclick="submitClarify()">Re-analyze ↵</button>
       </div>`;
+    document.getElementById('recipe-btn').style.display='none';
     return;
   }
 
-  const PEOPLE = {
-    gal:   { emoji: '🏋️', name: 'Gal',   role: `${ageYears(GAL_DOB)} years old` },
-    shelly:{ emoji: '🌸',  name: 'Shelly', role: `${ageYears(SHELLY_DOB)} years old` },
-    sol:   { emoji: '👶',  name: 'Sol',    role: solAgeText() }
-  };
+  // Score pills
+  const sr=document.getElementById('scores-row'); sr.innerHTML='';
+  lastPeople.forEach((pid,i)=>{
+    const s=data.scores?.[pid]; if(!s)return;
+    const col=scoreColor(s.score);
+    sr.innerHTML+=`<div class="score-pill" style="animation-delay:${i*.08}s">
+      <span class="sp-emoji">${PC[pid].emoji}</span>
+      <span class="sp-name">${PC[pid].name}</span>
+      <span class="sp-num" style="color:${col}">${s.score}</span>
+      <span class="sp-lbl" style="color:${col}">${scoreLabel(s.score)}</span>
+    </div>`;
+  });
 
-  lastPeople.forEach((pid, i) => {
-    const s = data.scores?.[pid];
-    if (!s) return;
-    const pc = PEOPLE[pid];
-
-    const hls = (s.highlights || []).map(h =>
-      `<div class="pt good"><div class="dot"></div>${h}</div>`).join('');
-    const wrn = (s.warnings || []).map(w =>
-      `<div class="pt warn"><div class="dot"></div>${w}</div>`).join('');
-
-    let sfNote = '';
-    if (data.is_superfood && data.superfood_note) {
-      sfNote = `<div class="superfood-note">⭐ ${data.superfood_note}</div>`;
-    }
-
-    let servBox = '';
-    if (pid === 'sol' && s.serving_suggestion) {
-      servBox = `<div class="serving-box">
-        <div class="serving-label">🍴 How to serve Sol</div>
-        <p>${s.serving_suggestion}</p>
-      </div>`;
-    }
-
-    body.innerHTML += `
-      <div class="score-card" style="animation-delay:${i * 0.08}s">
-        <div class="card-top">
-          <div class="person-meta">
-            <h3><span>${pc.emoji}</span>${pc.name}</h3>
-            <p>${pc.role}</p>
-          </div>
-          ${ringHTML(s.score)}
-        </div>
-        ${sfNote}
-        <p class="summary">${s.summary}</p>
-        <div class="points">${hls}${wrn}</div>
-        ${servBox}
-      </div>`;
+  // Detail cards
+  const body=document.getElementById('results-body'); body.innerHTML='';
+  lastPeople.forEach((pid,i)=>{
+    const s=data.scores?.[pid]; if(!s)return;
+    const pc=PC[pid];
+    const age=pid==='sol'?solAgeText():`${ageYears(pc.dob)} years old`;
+    const hlTags=(s.highlights||[]).map(h=>`<span class="tag good">✓ ${h}</span>`).join('');
+    const wrnTags=(s.warnings||[]).map(w=>`<span class="tag warn">⚠ ${w}</span>`).join('');
+    const serving=pid==='sol'&&s.serving_suggestion
+      ?`<div class="serving-mini"><div class="slabel">🍴 How to serve</div><p>${s.serving_suggestion}</p></div>`:'';
+    body.innerHTML+=`<div class="detail-card" style="animation-delay:${i*.08}s">
+      <div class="dh"><span class="dh-emoji">${pc.emoji}</span><span class="dh-name">${pc.name}</span><span class="dh-age">${age}</span></div>
+      <p class="verdict">${s.verdict||''}</p>
+      <div class="tags">${hlTags}${wrnTags}</div>
+      ${serving}
+    </div>`;
   });
 }
 
 async function submitClarify() {
-  const v = document.getElementById('clarify-in')?.value?.trim();
-  if (!v) return;
-  await startAnalysis(v);
+  const v=document.getElementById('clarify-in')?.value?.trim();
+  if(v) await startAnalysis(v);
 }
 
-// ──────────────────────────────────────────────
-//  Save / History
-// ──────────────────────────────────────────────
+// Recipes
+async function suggestRecipes() {
+  if(!lastResult?.product_name) return;
+  const btn=document.getElementById('recipe-btn');
+  const box=document.getElementById('recipe-dishes');
+  btn.innerHTML='<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0"></div> Thinking…';
+  btn.style.pointerEvents='none';
+  try {
+    const res=await fetch(API_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:MODEL, max_tokens:100,
+        messages:[{role:'user',content:`For "${lastResult.product_name}", suggest 2-3 dish names. Reply with ONLY the dish names, one per line, nothing else.`}]
+      })
+    });
+    const data=await res.json();
+    const text=(data.content||[]).map(b=>b.text||'').join('').trim();
+    const dishes=text.split('\n').map(d=>d.replace(/^[-\d.)+\s]+/,'').trim()).filter(Boolean).slice(0,3);
+    box.innerHTML=dishes.map((d,i)=>`<div class="dish-item" style="animation-delay:${i*.07}s">🍽 ${d}</div>`).join('');
+    box.style.display='flex';
+    btn.style.display='none';
+  } catch {
+    btn.innerHTML='<span>👨‍🍳</span> Suggest a Recipe';
+    btn.style.pointerEvents='auto';
+    showToast('Could not get recipe suggestions');
+  }
+}
+
+// History
 function saveResult() {
-  if (!lastResult) return;
-  const item = {
-    id:     Date.now(),
-    date:   new Date().toISOString(),
-    image:  capturedImage,
-    people: lastPeople,
-    result: lastResult
-  };
+  if(!lastResult)return;
+  const item={id:Date.now(),date:new Date().toISOString(),image:capturedImage,people:lastPeople,result:lastResult};
   scanHistory.unshift(item);
-  if (scanHistory.length > 60) scanHistory = scanHistory.slice(0, 60);
-  localStorage.setItem('ns_history', JSON.stringify(scanHistory));
+  if(scanHistory.length>60)scanHistory=scanHistory.slice(0,60);
+  localStorage.setItem('ns_history',JSON.stringify(scanHistory));
   showToast('Saved ✓');
 }
-
 function renderHistory() {
-  const list = document.getElementById('history-list');
-  if (!scanHistory.length) {
-    list.innerHTML = `<div class="empty-state"><div class="eicon">🥗</div><p>No scans yet.<br>Start by taking a photo!</p></div>`;
-    return;
-  }
-  list.innerHTML = scanHistory.map(item => {
-    const d     = new Date(item.date);
-    const dstr  = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
-    const tstr  = d.toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'});
-    const emos  = {gal:'🏋️', shelly:'🌸', sol:'👶'};
-    const dots  = (item.people || []).map(p => {
-      const sc = item.result?.scores?.[p]?.score;
-      if (!sc) return '';
-      const col = scoreColor(sc);
-      return `<span class="ms" style="background:${col}18;color:${col}">${emos[p] || p[0].toUpperCase()} ${sc}</span>`;
+  const list=document.getElementById('history-list');
+  if(!scanHistory.length){list.innerHTML=`<div class="empty-state"><div class="eicon">🥗</div><p>No scans yet.<br>Take a photo to start!</p></div>`;return;}
+  const emos={gal:'🏋️',shelly:'🧘‍♀️',sol:'👶'};
+  list.innerHTML=scanHistory.map(item=>{
+    const d=new Date(item.date);
+    const dstr=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const tstr=d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    const dots=(item.people||[]).map(p=>{
+      const sc=item.result?.scores?.[p]?.score; if(!sc)return'';
+      const col=scoreColor(sc);
+      return`<span class="ms" style="background:${col}18;color:${col}">${emos[p]||p[0].toUpperCase()} ${sc}</span>`;
     }).join('');
-    return `
-      <div class="h-item" onclick="viewHistory(${item.id})">
-        <img class="h-thumb" src="data:image/jpeg;base64,${item.image}" alt="">
-        <div class="h-info">
-          <h4>${item.result?.product_name || 'Food scan'}</h4>
-          <p class="hdate">${dstr} · ${tstr}</p>
-          <div class="h-scores">${dots}</div>
-        </div>
-      </div>`;
+    return`<div class="h-item" onclick="viewHistory(${item.id})">
+      <img class="h-thumb" src="data:image/jpeg;base64,${item.image}" alt="">
+      <div class="h-info"><h4>${item.result?.product_name||'Food scan'}</h4><p class="hdate">${dstr} · ${tstr}</p><div class="h-scores">${dots}</div></div>
+    </div>`;
   }).join('');
 }
-
 function viewHistory(id) {
-  const item = scanHistory.find(x => x.id === id);
-  if (!item) return;
-  capturedImage = item.image;
-  lastResult    = item.result;
-  lastPeople    = item.people;
-  renderResults(item.result);
-  showScreen('results');
+  const item=scanHistory.find(x=>x.id===id); if(!item)return;
+  capturedImage=item.image; lastResult=item.result; lastPeople=item.people;
+  renderResults(item.result); showScreen('results');
 }
-
 function clearHistory() {
-  if (!confirm('Clear all scan history?')) return;
-  scanHistory = [];
-  localStorage.setItem('ns_history', '[]');
-  renderHistory();
+  if(!confirm('Clear all history?'))return;
+  scanHistory=[]; localStorage.setItem('ns_history','[]'); renderHistory();
 }
 
-// ──────────────────────────────────────────────
-//  Settings
-// ──────────────────────────────────────────────
+// Settings
 function saveApiKey() {
-  const v = document.getElementById('api-key-input').value.trim();
-  if (!v) { showToast('Please enter a key'); return; }
-  apiKey = v;
-  localStorage.setItem('ns_apikey', v);
-  updateNoKeyBanner();
-  updateAnalyzeBtn();
-  showToast('API key saved ✓');
+  const v=document.getElementById('api-key-input').value.trim();
+  if(!v){showToast('Please enter a key');return;}
+  apiKey=v; localStorage.setItem('ns_apikey',v);
+  updateNoKeyBanner(); showToast('API key saved ✓');
 }
 
-// ──────────────────────────────────────────────
-//  Scan Again
-// ──────────────────────────────────────────────
+// Scan again
 function scanAgain() {
-  capturedImage = null;
-  lastResult    = null;
-  const img = document.getElementById('preview-img');
-  img.style.display = 'none'; img.src = '';
-  document.getElementById('cam-placeholder').style.display = 'flex';
-  document.getElementById('retake-btn').style.display = 'none';
-  document.getElementById('camera-wrap').classList.remove('has-img');
-  updateAnalyzeBtn();
-  showScreen('home');
+  capturedImage=null; lastResult=null; selectedPeople.clear();
+  document.querySelectorAll('.person-btn').forEach(b=>b.classList.remove('sel'));
+  const img=document.getElementById('preview-img'); img.style.display='none'; img.src='';
+  document.getElementById('cam-placeholder').style.display='flex';
+  document.getElementById('retake-btn').style.display='none';
+  updateHint(); showScreen('home');
 }
 
-// ──────────────────────────────────────────────
-//  UI Helpers
-// ──────────────────────────────────────────────
 function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2200);
+  const t=document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2200);
 }
-
 function showError(msg) {
-  // Remove old errors
-  document.querySelectorAll('.error-box').forEach(e => e.remove());
-  const box = document.createElement('div');
-  box.className = 'error-box';
-  box.innerHTML = `<strong>⚠️ Oops</strong>${msg}`;
-  const home = document.getElementById('screen-home');
-  home.insertBefore(box, home.querySelector('.camera-wrap'));
-  setTimeout(() => box.remove(), 6000);
+  document.querySelectorAll('.error-box').forEach(e=>e.remove());
+  const box=document.createElement('div'); box.className='error-box';
+  box.innerHTML=`<strong>⚠️ Error</strong>${msg}`;
+  const home=document.getElementById('screen-home');
+  home.insertBefore(box,home.querySelector('.camera-wrap'));
+  setTimeout(()=>box.remove(),7000);
 }
 
-// ──────────────────────────────────────────────
-//  Boot
-// ──────────────────────────────────────────────
 init();
 </script>
 </body>
