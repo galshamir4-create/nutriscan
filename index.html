@@ -481,8 +481,10 @@ function renderResults(data) {
   sb.innerHTML=data.is_superfood&&data.superfood_note?`<div class="superfood-banner">⭐ ${data.superfood_note}</div>`:'';
 
   // Reset recipe
-  document.getElementById('recipe-btn').style.display='flex';
-  document.getElementById('recipe-btn').innerHTML='<span>👨‍🍳</span> Suggest a Recipe';
+  const recipeBtn=document.getElementById('recipe-btn');
+  recipeBtn.style.display='flex';
+  recipeBtn.style.pointerEvents='auto';
+  recipeBtn.innerHTML='<span>👨‍🍳</span> Suggest a Recipe';
   document.getElementById('recipe-dishes').style.display='none';
   document.getElementById('recipe-dishes').innerHTML='';
 
